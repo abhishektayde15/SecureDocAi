@@ -70,9 +70,10 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
             uploadedFiles.push(newFile);
         }
 
-        if (mode === 'LINK') {
-            res.json({ success: true, link: `http://localhost:5173/view/${uploadedFiles[0].secureId}` });
-        } else {
+       if (mode === 'LINK') {
+    
+    res.json({ success: true, link: `https://docai-798b1.web.app/view/${uploadedFiles[0].secureId}` });
+} else {
             res.json({ success: true, message: `Sent to ${shopId} successfully!` });
         }
 
