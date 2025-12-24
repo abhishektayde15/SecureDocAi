@@ -1,0 +1,54 @@
+# ---------------------------------------
+# UNIVERSAL IGNORES (Client & Server Dono ke liye)
+# ---------------------------------------
+
+# Dependencies (Ye bahut heavy hoti hain, upload nahi karni)
+node_modules/
+*/node_modules/
+
+# Logs (Error logs ki zaroorat nahi)
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS System Files (Mac/Windows ka kachra)
+.DS_Store
+Thumbs.db
+
+# Editor Files (VS Code settings)
+.vscode/
+.idea/
+*.swp
+*.suo
+*.sln
+
+# ---------------------------------------
+# SECURITY (Ye Sabse Important Hai)
+# ---------------------------------------
+# Kisi bhi folder mein .env file ho, wo upload nahi hogi
+.env
+.env.local
+.env.production
+.env.development
+*.local
+
+# ---------------------------------------
+# BUILD OUTPUT (Deploy karte waqt naya banega)
+# ---------------------------------------
+dist/
+dist-ssr/
+build/
+coverage/
+
+# ---------------------------------------
+# CLIENT SPECIFIC
+# ---------------------------------------
+client/dist/
+client/.env.local
+
+# ---------------------------------------
+# SERVER SPECIFIC
+# ---------------------------------------
+server/dist/
