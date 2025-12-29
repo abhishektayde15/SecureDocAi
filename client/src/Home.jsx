@@ -27,7 +27,7 @@ const Home = () => {
 
   // --- UPLOAD LOGIC ---
   const handleUpload = async () => {
-    if (files.length === 0) return alert("Please select at least one file!!");
+    if (files.length === 0) return alert("Please select at least one file!");
     if (activeTab === "SHOP" && !shopId) return alert("Please enter Shop ID!");
 
     setLoading(true);
