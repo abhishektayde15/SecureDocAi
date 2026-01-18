@@ -4,6 +4,10 @@ const FileSchema = new mongoose.Schema({
     // --- 🟢 EXISTING FIELDS (Purane wale - No Change) ---
     originalName: String,
     cloudinaryUrl: String,
+
+    // 👇 CHANGE 1: Ye nayi line add ki hai (Cloudinary se delete karne ke liye ID)
+    publicId: String,
+
     secureId: { type: String, unique: true },
     ownerId: String, // Clerk User ID
     ownerEmail: String,
@@ -25,14 +29,12 @@ const FileSchema = new mongoose.Schema({
     senderName: { type: String, default: 'Anonymous' }, // Bhejne wale ka naam
 
     // 🔥 NEW FIELD ADDED: Watermark Type (GHOST or BOTTOM)
-    // Agar user kuch select nahi karta, to Default 'GHOST' rahega.
     watermarkType: { type: String, default: 'GHOST' }, 
 
     // --- 💀 AUTO-DELETE LOGIC (Snapchat Style) ---
-    expireAt: { 
-        type: Date, 
-        index: { expires: '0s' } 
-    } 
+    // 👇 CHANGE 2 & 3: Purana 'index: expires' wala code hata diya hai.
+    // Ab ye sirf Date store karega. Delete karne ka kaam humara server (cron job) karega.
+    expireAt: { type: Date } 
 });
 
 module.exports = mongoose.model('File', FileSchema);

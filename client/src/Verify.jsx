@@ -17,7 +17,7 @@ const Verify = () => {
     const imageSrc = webcamRef.current.getScreenshot();
 
     try {
-      await axios.post("http://localhost:5000/api/verify", {
+      await axios.post("https://securedoc-api.onrender.com/api/verify", {
         secureId: id, name, snapshot: imageSrc
       });
       navigate(`/view/${id}`);

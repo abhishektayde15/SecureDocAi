@@ -48,22 +48,26 @@ app.post('/api/upload', upload.array('files', 10), async (req, res) => {
         
         const uploadedFiles = [];
         
-        for (const file of req.files) {
+for (const file of req.files) {
             const expireDate = new Date(Date.now() + (parseInt(expiresIn) || 60) * 60000);
 
             const newFile = new File({
                 originalName: file.originalname,
                 cloudinaryUrl: file.path, 
+                
+                // 👇 SIRF YE EK LINE ADD HUI HAI (Baki sab same hai)
+                publicId: file.filename,
+
                 secureId: uuidv4(),
                 ownerId,
-                ownerEmail,
-                allowedAction,
+                ownerEmail, // ✅ Purana data safe hai
+                allowedAction, // ✅ Purana data safe hai
                 expiresIn: parseInt(expiresIn) || 60,
                 expireAt: expireDate,
                 
-                receiverShopId: mode === 'SHOP' ? shopId : null,
-                senderName: senderName || 'User',
-                watermarkType: watermarkType || 'GHOST'
+                receiverShopId: mode === 'SHOP' ? shopId : null, // ✅ Purana data safe hai
+                senderName: senderName || 'User', // ✅ Purana data safe hai
+                watermarkType: watermarkType || 'GHOST' // ✅ Purana data safe hai
             });
 
             await newFile.save();
@@ -220,6 +224,47 @@ app.post('/api/detect-anomaly', async (req, res) => {
         res.json({ verdict: "SAFE" }); 
     }
 });
+
+
+ // ... Upar ka sara code waisa hi rahega ...
+
+// --- 🧹 AUTOMATIC CLEANUP SYSTEM (Start) ---
+const checkExpiredFiles = async () => {
+    try {
+        const now = new Date();
+        // Wo files dhundo jo expire ho chuki hain
+        const expiredFiles = await File.find({ expireAt: { $lt: now } });
+
+        if (expiredFiles.length > 0) {
+            console.log(`🧹 Cleaning up ${expiredFiles.length} files...`);
+
+            for (const file of expiredFiles) {
+                // 1. Cloudinary se delete karo
+                if (file.publicId) {
+                    try {
+                        // PDF/Docs ke liye 'raw', Images ke liye 'image', Video ke liye 'video'
+                        await cloudinary.uploader.destroy(file.publicId, { resource_type: 'raw' });
+                        await cloudinary.uploader.destroy(file.publicId, { resource_type: 'image' });
+                        await cloudinary.uploader.destroy(file.publicId, { resource_type: 'video' });
+                    } catch (err) {
+                        console.log("Cloudinary error:", err.message);
+                    }
+                }
+
+                // 2. Database se delete karo
+                await File.findByIdAndDelete(file._id);
+                console.log(`✅ Deleted: ${file.originalName}`);
+            }
+        }
+    } catch (error) {
+        console.error("Cleanup Error:", error);
+    }
+};
+
+// Har 1 Minute (60000 ms) mein chalega
+setInterval(checkExpiredFiles, 60000);
+// --- 🧹 AUTOMATIC CLEANUP SYSTEM (End) ---
+
 
 // ... baaki server listen code same rahega ...
 

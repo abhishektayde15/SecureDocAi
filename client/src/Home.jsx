@@ -49,7 +49,7 @@ const Home = () => {
     if (activeTab === "SHOP") formData.append("shopId", shopId.toUpperCase());
 
     try {
-      const res = await axios.post("http://localhost:5000/api/upload", formData);
+      const res = await axios.post("https://securedoc-api.onrender.com/api/upload", formData);
       
       if (activeTab === "LINK") {
         setResultMsg(res.data.link);
@@ -74,7 +74,7 @@ const Home = () => {
   const fetchLogs = async () => {
     setIsRefreshing(true);
     try {
-      const res = await axios.get(`http://localhost:5000/api/my-logs/${user.id}`);
+      const res = await axios.get(`https://securedoc-api.onrender.com/api/my-logs/${user.id}`);
       setLogs(res.data.files);
     } catch (err) { console.error(err); }
     setIsRefreshing(false);

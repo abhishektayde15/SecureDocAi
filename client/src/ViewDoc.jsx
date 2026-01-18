@@ -41,7 +41,7 @@ const ViewDoc = () => {
         const checkShop = async () => {
             try {
                 // Pehle check karo agar shop hai
-                let res = await axios.get(`http://localhost:5000/api/shop/me/${user.id}`);
+                let res = await axios.get(`https://securedoc-api.onrender.com/api/shop/me/${user.id}`);
                 
                 if (res.data.shop) {
                     setMyShopId(res.data.shop.shopId);
@@ -52,7 +52,7 @@ const ViewDoc = () => {
                 } else {
                     // Agar Shop nahi hai -> TOH CREATE KARO (Auto)
                     const autoId = `${user.firstName.toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
-                    res = await axios.post("http://localhost:5000/api/shop/create", {
+                    res = await axios.post("https://securedoc-api.onrender.com/api/shop/create", {
                         ownerId: user.id,
                         shopId: autoId,
                         shopName: user.fullName
@@ -73,7 +73,7 @@ const ViewDoc = () => {
 
     const fetchDoc = async () => {
       try {
-        const res = await axios.get(`http://localhost:5000/api/view/${id}`);
+        const res = await axios.get(`https://securedoc-api.onrender.com/api/view/${id}`);
         setFile(res.data.file);
       } catch (err) {
         setError('Link Expired or Invalid');
@@ -130,7 +130,7 @@ const ViewDoc = () => {
         const newCount = violationCount + 1;
         setViolationCount(newCount);
 
-        const res = await axios.post("http://localhost:5000/api/detect-anomaly", { 
+        const res = await axios.post("https://securedoc-api.onrender.com/api/detect-anomaly", { 
             logs: currentLogs,
             secureId: id,
             violationCount: newCount

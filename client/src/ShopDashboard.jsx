@@ -23,7 +23,7 @@ const ShopDashboard = () => {
 
     const initShop = async () => {
         try {
-            const res = await axios.get(`http://localhost:5000/api/shop/me/${user.id}`);
+            const res = await axios.get(`https://securedoc-api.onrender.com/api/shop/me/${user.id}`);
             
             if (!res.data.shop) {
                 throw new Error("Shop not found, create new one");
@@ -46,7 +46,7 @@ const ShopDashboard = () => {
   useEffect(() => {
     if (!shop) return;
     const fetchFiles = () => {
-        axios.get(`http://localhost:5000/api/shop/files/${shop.shopId}`)
+        axios.get(`https://securedoc-api.onrender.com/api/shop/files/${shop.shopId}`)
              .then(res => setFiles(res.data.files))
              .catch(console.error);
     };
@@ -62,7 +62,7 @@ const ShopDashboard = () => {
     const autoId = `${firstName}-${randomNum}`; 
     
     try {
-        const res = await axios.post("http://localhost:5000/api/shop/create", {
+        const res = await axios.post("https://securedoc-api.onrender.com/api/shop/create", {
             ownerId: user.id,
             shopId: autoId,
             shopName: user.fullName
